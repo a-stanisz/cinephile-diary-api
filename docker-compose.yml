@@ -1,14 +1,28 @@
-version: "3.2"
+version: "3.4"
 services:
-  app:
+  auth-srv:
     command: node src/server.js
     build:
-      context: .
+      context: ./auth-srv
       dockerfile: Dockerfile
     ports:
-      - published: ${APP_PORT:-3000}
+      - published: ${AUTH_SRV_PORT:-3000}
         target: 3000
     volumes:
-      - .:/app/
+      - ./auth-srv/:/app/
     environment:
       JWT_SECRET: ${JWT_SECRET}
+  movies-srv:
+    command: node src/server.js
+    build:
+      context: ./movies-srv
+      target: debug
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+      - 9229:9229
+    volumes:
+      - ./movies-srv/:/app/
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+

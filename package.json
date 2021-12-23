@@ -1,16 +1,19 @@
 {
-  "name": "node-auth-svc",
+  "name": "cinephile-diary-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node.js task from Netguru",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-stanisz/cinephile-diary-api.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Adam Staniszewski",
   "license": "",
   "dependencies": {
-    "body-parser": "1.19.0",
-    "express": "4.17.1",
-    "jsonwebtoken": "^8.5.1"
+    "auth-srv": "file:auth-srv",
+    "movies-srv": "file:movies-srv"
   }
 }
