@@ -1,3 +1,7 @@
+```
+Please note that the default branch of this repository is 'main'
+```
+
 # Cinephile Diary API
 
 A simple Movie API that creates and stores a movie object based on provided within a request: user's credentials and movie title. Also, fetch a list of movies created by the user.
