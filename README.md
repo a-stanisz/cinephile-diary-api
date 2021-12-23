@@ -61,28 +61,44 @@ Application uses mongodb as a database service.
 You need to have `docker` and `docker-compose` installed on your computer.
 
 Generating tokens in auth service needs to provide env variable
-`JWT_SECRET`. The same secret is used by Movie API service to verify the JWT tokens.
+`JWT_SECRET` for docker-compose. The same secret is used by Movie API service to verify the JWT tokens:
+```
+JWT_SECRET=<your-secret>
+```
 
 You need to create OMDB apikey and provide it as env variable for docker-compose:
-`OMDB_APIKEY=YOURKEY`
+```
+OMDB_APIKEY=<your-key>
+```
+
+Setting up a database requires providing env variables for docker-compose:
+
+```
+MONGO_INITDB_ROOT_USERNAME=<your-mongodb-root-username>
+MONGO_INITDB_ROOT_PASSWORD=<your-mongodb-root-password>
+```
 
 ## Run locally
 
 1. Clone this repository
-1. Run from root dir
+2. Run with docker-compose from root dir:
 
 ```
-JWT_SECRET=secret OMDB_APIKEY=YOURKEY docker-compose up -d
+JWT_SECRET=secret \
+OMDB_APIKEY=somekey \
+MONGO_INITDB_ROOT_USERNAME=root \
+MONGO_INITDB_ROOT_PASSWORD=password \
+docker-compose up -d
 ```
+You might need to run `npm-install` in each of two services first before runnning `docker-compose up`.
 
-By default the auth service will start on port `3000` but you can override
-the default value by setting the `APP_PORT` env var
+When running the stack again with `docker-compose`, sometimes it is needed to rebuild it. Just use the flag `--build` or use separate command of `docker-compose build`.
 
-```
-APP_PORT=8081 JWT_SECRET=secret docker-compose up -d
-```
+By default the auth service will start on port `3000` but you can override the default value by setting additional `AUTH_SRC_PORT` env var when runnind `docker-compose`.
 
-To stop the authorization service run
+The movies service run on default port of `8080` and `9229` for debugging.
+
+To stop the services stack run:
 
 ```
 docker-compose down
@@ -132,9 +148,11 @@ Response
 ## Checklist
 
 - Dockerize ✔
-- Database setup
-- Define data model
-- Define controllers and routes
+- Define database access layer
+- Define services access layer (external OMDB API)
+- Define routes and controllers
+- Define middleware for verifying user authentication and user type restrictions
+- Remember of proper error handling
 - Complete this RADME further
 - Write unit tests
 - Write some integration tests
@@ -143,6 +161,26 @@ Response
 
 ## Important notes
 
-- This is a training and recruitment task project, keep in mind that it is not inteded to use outside development environment for now.
+- This is a training and recruitment task project. Kkeep in mind that it is not intended to be used outside development environment for now.
+- Since I don't commit editor's specific files, here is a sample content of VS Code `launch.json` I used to debugging:
+```
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Docker: Attach to Node",
+      "type": "node",
+      "request": "attach",
+      "remoteRoot": "/app/src",
+      "port": 9229,
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}/movies-srv/",
+      "protocol": "inspector",
+      "restart": true,
+    }
+  ],
+  "compounds": []
+}
+```
 
 ## Ideas for further develompent
