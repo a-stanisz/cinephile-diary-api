@@ -1,39 +1,66 @@
-# Node.js recruitment task
+# Cinephile Diary API
 
-We'd like you to build a simple Movie API. It should provide two endpoints:
+A simple Movie API that creates and stores a movie object based on provided within a request: user's credentials and movie title. Also, fetch a list of movies created by the user.
 
-1. `POST /movies`
-   1. Allows creating a movie object based on movie title passed in the request body
-   2. Based on the title additional movie details should be fetched from
-      https://omdbapi.com/ and saved to the database. Data we would like you to
-      fetch from OMDb API:
+Movie object contains following data:
    ```
      Title: string
      Released: date
      Genre: string
      Director: string
    ```
-   3. Only authorized users can create a movie.
-   4. `Basic` users are restricted to create 5 movies per month (calendar
-      month). `Premium` users have no limits.
-1. `GET /movies`
-   1. Should fetch a list of all movies created by an authorized user.
 
-⚠️ Don't forget to verify user's authorization token before processing the
-request. The token should be passed in request's `Authorization` header.
+## Endpoints
+
+### `POST /movies`
+
+- Request should contain: "username", "password", "title".
+
+### `GET /movies`
+
+- Request should contain: "username", "password".
+
+## Mock users
+
+The auth service defines two user accounts that you should use
+
+1. `Basic` user (allowed to create 5 movies per month):
 
 ```
-Authorization: Bearer <token>
+ username: 'basic-thomas'
+ password: 'sR-_pcoow-27-6PAwCD8'
 ```
 
-# Authorization service
+1. `Premium` user (ulimited one):
 
-To authorize users please use our simple auth service based on JWT tokens.
-Auth service code is located under `./src` directory
+```
+username: 'premium-jim'
+password: 'GBLtTyq3E_UNjFnpo9m6'
+```
+
+## Credits
+
+Movies data is fetched from OMDb API (https://omdbapi.com/).
+
+Auth serice is provided by Netguru (https://github.com/netguru/nodejs-recruitment-task).
+
+## Application structure
+
+Movie API service code is located under `./movies-srv` directory.
+
+Auth service code is located under `./auth-srv` directory.
+
+Application uses mongodb as a database service.
 
 ## Prerequisites
 
-You need to have `docker` and `docker-compose` installed on your computer to run the service
+You need to have `docker` and `docker-compose` installed on your computer.
+
+Generating tokens in auth service needs to provide env variable
+`JWT_SECRET`. The same secret is used by Movie API service to verify the JWT tokens.
+
+You need to create OMDB apikey and provide it as env variable for docker-compose:
+`OMDB_APIKEY=YOURKEY`
 
 ## Run locally
 
@@ -41,7 +68,7 @@ You need to have `docker` and `docker-compose` installed on your computer to run
 1. Run from root dir
 
 ```
-JWT_SECRET=secret docker-compose up -d
+JWT_SECRET=secret OMDB_APIKEY=YOURKEY docker-compose up -d
 ```
 
 By default the auth service will start on port `3000` but you can override
@@ -57,33 +84,9 @@ To stop the authorization service run
 docker-compose down
 ```
 
-## JWT Secret
+## JWT payload
 
-To generate tokens in auth service you need to provide env variable
-`JWT_SECRET`. It should be a string value. You should use the same secret in
-the API you're building to verify the JWT tokens.
-
-## Users
-
-The auth service defines two user accounts that you should use
-
-1. `Basic` user
-
-```
- username: 'basic-thomas'
- password: 'sR-_pcoow-27-6PAwCD8'
-```
-
-1. `Premium` user
-
-```
-username: 'premium-jim'
-password: 'GBLtTyq3E_UNjFnpo9m6'
-```
-
-## Token payload
-
-Decoding the auth token will give you access to basic information about the
+The auth token gives access to basic information about the
 user, including its role.
 
 ```
@@ -122,24 +125,20 @@ Response
 }
 ```
 
-## Rules
+## Checklist
 
-- Database and framework choice are on your side.
-- Your API has to be dockerized. Create `Dockerfile` and `docker-compose` and document the process of running it locally.
-- Provided solution should consist of two microservices.
-  - `Authentication Service` - provided by us to auth users
-  - `Movies Service` - created by you to handle movies data
-- Test your code.
-- Provide documentation of your API.
-- Application should be pushed to the public git repository and should have a
-  working CI/CD pipeline that runs the tests. For example you can use GitHub
-  Actions or CircleCI. Create a sample PR to show us the working CI/CD pipeline.
+- Dockerize ✔
+- Database setup
+- Define data model
+- Define controllers and routes
+- Complete this RADME further
+- Write unit tests
+- Write some integration tests
+- Configure CI/CD pipeline with GitHub Actions
+- Create a sample Pull Request
 
-## What will be evaluated?
+## Important notes
 
-- Task completeness
-- Architecture
-- Code quality
-- Tests quality
-- Database design
-- Technology stack
+- This is a training and recruitment task project, keep in mind that it is not inteded to use outside development environment for now.
+
+## Ideas for further develompent
