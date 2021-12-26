@@ -2,15 +2,27 @@
   "name": "movies-srv",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/server/index.js",
+    "dev-docker": "../node_modules/nodemon/bin/nodemon.js --debug=5858",
+    "dev-host": "nodemon --debug=5858",
+    "start-watch": "nodemon ./src/server/index.js --inspect=0.0.0.0:9229",
+    "start-wait-debuger": "nodemon ./src/server/index.js --inspect-brk=0.0.0.0:9229",
+    "test": "cross-env NODE_ENV=test PORT=8081 mocha --timeout 10000 --exit --inspect=0.0.0.0:9230",
+    "test-watch": "nodemon --exec \"npm test\"",
+    "test-wait-debuger": "cross-env NODE_ENV=test PORT=8081 mocha --no-timeouts --exit --inspect-brk=0.0.0.0:9230"
   },
   "keywords": [],
   "author": "Adam Staniszewski",
   "license": "",
   "dependencies": {
     "express": "^4.17.2",
-    "mongoose": "^6.1.3"
+    "mongodb": "^4.2.2",
+    "mongoose": "^6.1.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }

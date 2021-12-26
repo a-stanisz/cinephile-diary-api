@@ -1,6 +1,7 @@
-version: "3.4"
+version: "3.2"
 services:
   auth-srv:
+    container_name: ${AUTH_SRV_HOSTNAME:-auth-srv}
     command: node src/server.js
     build:
       context: ./auth-srv
@@ -13,27 +14,45 @@ services:
     environment:
       JWT_SECRET: ${JWT_SECRET}
   movies-srv:
-    command: node src/server.js
+    container_name: ${MOVIES_SRV_HOSTNAME:-movies-srv}
+    command: ../node_modules/.bin/nodemon --inspect=0.0.0.0:9229 ./bin/www
     build:
       context: ./movies-srv
       target: debug
+      args:
+        - NODE_ENV=development
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - ${MOVIES_SRV_PORT:-8080}:8080
       - 9229:9229
+      - 9230:9230
     depends_on:
-      - auth-srv
-      - mongodb
+      - ${AUTH_SRV_HOSTNAME}
+      - ${MONGODB_HOSTNAME}
     volumes:
-      - ./movies-srv/:/app/
+      - ./movies-srv/:/node_app/app
+      - ./package.json:/opt/node_app/package.json
+      - ./package-lock.json:/opt/node_app/package-lock.json
     environment:
+      MOVIES_SRV_PORT: ${MOVIES_SRV_PORT:-8080}
       JWT_SECRET: ${JWT_SECRET}
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGODB_USERNAME: ${MONGODB_USERNAME}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      DB_HOST: ${MONGODB_HOSTNAME:-mongodb}
+      DB_PORT: ${DB_PORT:-27017}
   mongodb:
+    container_name: ${MONGODB_HOSTNAME:-mongodb}
     image: mongo
+    restart: always
     ports:
-      - '27017:27017'
+      - ${DB_PORT:-27017}:27017
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: example-database
+    healthcheck:
+      test: "[ `echo 'db.runCommand(\"ping\").ok' | mongo localhost/example-database --quiet` ] && echo 0 || echo 1"
+      interval: 5s
+      start_period: 10s
+      timeout: 4s
+      retries: 3
