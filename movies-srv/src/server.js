@@ -2,7 +2,6 @@ const express = require('express');
 const dbConnect = require('./database');
 
 const PORT = process.env.MOVIES_SRV_PORT || 8080;
-// const HOST = '0.0.0.0';
 
 const DB_NAME = 'test';
 dbConnect(DB_NAME);

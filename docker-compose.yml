@@ -21,7 +21,7 @@ services:
       context: ./movies-srv
       dockerfile: Dockerfile
     ports:
-      - ${MOVIES_SRV_PORT}:8080
+      - ${MOVIES_SRV_PORT}:${MOVIES_SRV_PORT}
       - 9229:9229
       - 9230:9230
     depends_on:
