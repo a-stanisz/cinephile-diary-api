@@ -1,9 +1,5 @@
 FROM node:14.15-alpine
 
-ARG PORT=3000
-ENV PORT ${MOVIES_SRV_PORT}
-EXPOSE ${MOVIES_SRV_PORT} 9229 9230
-
 WORKDIR /app
 
 COPY ./package.json ./package-lock.json ./
