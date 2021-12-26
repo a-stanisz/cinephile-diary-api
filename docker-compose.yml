@@ -1,6 +1,7 @@
-version: "3.4"
+version: "2.4"
 services:
   auth-srv:
+    container_name: ${AUTH_SRV_NAME:-auth-srv}
     command: node src/server.js
     build:
       context: ./auth-srv
@@ -11,29 +12,36 @@ services:
     volumes:
       - ./auth-srv/:/app/
     environment:
+      AUTH_SRV_PORT: ${AUTH_SRV_PORT}
       JWT_SECRET: ${JWT_SECRET}
   movies-srv:
+    container_name: ${MOVIES_SRV_NAME:-movies-srv}
     command: node src/server.js
     build:
       context: ./movies-srv
-      target: debug
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - ${MOVIES_SRV_PORT}:8080
       - 9229:9229
+      - 9230:9230
     depends_on:
       - auth-srv
       - mongodb
     volumes:
       - ./movies-srv/:/app/
     environment:
+      AUTH_SRV_PORT: ${AUTH_SRV_PORT}
+      MOVIES_SRV_PORT: ${MOVIES_SRV_PORT}
       JWT_SECRET: ${JWT_SECRET}
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGODB_USERNAME: ${MONGODB_USERNAME}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      DB_HOST: ${MONGODB_SRV_NAME:-mongodb}
+      DB_PORT: ${DB_PORT:-27017}
   mongodb:
+    container_name: ${MONGODB_SRV_NAME:-mongodb}
     image: mongo
     ports:
       - '27017:27017'
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
