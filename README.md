@@ -74,20 +74,20 @@ OMDB_APIKEY=<your-key>
 Setting up a database requires providing env variables for docker-compose:
 
 ```
-MONGO_INITDB_ROOT_USERNAME=<your-mongodb-root-username>
-MONGO_INITDB_ROOT_PASSWORD=<your-mongodb-root-password>
+MONGODB_USERNAME=<your-mongodb-root-username>
+MONGODB_PASSWORD=<your-mongodb-root-password>
 ```
 
 ## Run locally
 
 1. Clone this repository
-2. Run with docker-compose from root dir:
+2. Run with docker-compose from project root dir:
 
 ```
 JWT_SECRET=secret \
-OMDB_APIKEY=somekey \
-MONGO_INITDB_ROOT_USERNAME=root \
-MONGO_INITDB_ROOT_PASSWORD=password \
+OMDB_APIKEY=<your-key> \
+MONGODB_USERNAME=root \
+MONGODB_PASSWORD=password \
 docker-compose up -d
 ```
 You might need to run `npm-install` in each of two services first before runnning `docker-compose up`.
