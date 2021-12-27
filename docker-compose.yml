@@ -21,7 +21,7 @@ services:
       context: ./movies-srv
       dockerfile: Dockerfile
     ports:
-      - ${MOVIES_SRV_PORT}:8080
+      - ${MOVIES_SRV_PORT}:${MOVIES_SRV_PORT}
       - 9229:9229
       - 9230:9230
     depends_on:
@@ -33,6 +33,7 @@ services:
       AUTH_SRV_PORT: ${AUTH_SRV_PORT}
       MOVIES_SRV_PORT: ${MOVIES_SRV_PORT}
       JWT_SECRET: ${JWT_SECRET}
+      OMDB_APIKEY: ${OMDB_APIKEY}
       MONGODB_USERNAME: ${MONGODB_USERNAME}
       MONGODB_PASSWORD: ${MONGODB_PASSWORD}
       DB_HOST: ${MONGODB_SRV_NAME:-mongodb}
@@ -47,4 +48,4 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
     volumes:
-      - ./movies-srv/:/app/    
+      - ./movies-srv/:/app/
