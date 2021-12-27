@@ -8,8 +8,7 @@ const getMovieDataByTitle = (title) => {
       const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
       console.log('Status Code:', res.status);
       console.log('Date in Response header:', headerDate);
-      const movie = res.data;
-      console.log(movie);
+      return res.data;
     })
     .catch(err => console.log('Error: ', err.message));
 }
