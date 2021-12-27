@@ -2,6 +2,7 @@ class Movie {
   constructor(title, releasedDate, genre, director) {
     this.data = { title, releasedDate, genre, director }
   }
+  
 }
 
 let hobbit = new Movie(
@@ -11,4 +12,4 @@ let hobbit = new Movie(
   'Peter Jackson'
 )
 
-console.log(typeof hobbit.data);
+console.log(hobbit.data);

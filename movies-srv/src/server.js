@@ -6,8 +6,14 @@ const PORT = process.env.MOVIES_SRV_PORT || 8080;
 const DB_NAME = 'test';
 dbConnect(DB_NAME);
 
-const omdb = require('./services/omdb');
-omdb('Hobbit');
+// Test other modules if work:
+// const omdb = require('./services/omdb');
+// omdb('Hobbit');
+
+const authsrv = require('./services/auth');
+authsrv('basic-thomas', 'sR-_pcoow-27-6PAwCD8');
+
+// 
 
 const app = express();
 
