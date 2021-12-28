@@ -3,11 +3,12 @@ module.exports = async (req, res, next) => {
     if (!req.body) {
       return res.status(400).json({ error: "invalid body" });
     }
-    const { title } = req.body;
+    console.log(req.body);
+    const title = req.body.title;
   if (!title) {
     return res.status(400).json({ error: "invalid title" });
   }
-    req.movie.searchStr = title;
+    req.searchStr = title;
   } catch (err) {
     err.statusCode = 500;
     throw err;
