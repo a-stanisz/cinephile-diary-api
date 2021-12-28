@@ -28,7 +28,7 @@ services:
       - auth-srv
       - mongodb
     volumes:
-      - ./movies-srv/:/app/
+      - ./movies-srv/volumes/:/app/volumes/
     environment:
       AUTH_HOST: ${AUTH_SRV_NAME:-auth-srv}
       AUTH_PORT: ${AUTH_SRV_PORT}
@@ -39,6 +39,7 @@ services:
       MONGODB_PASSWORD: ${MONGODB_PASSWORD}
       DB_HOST: ${MONGODB_SRV_NAME:-mongodb}
       DB_PORT: ${DB_PORT:-27017}
+      DB_NAME: ${EXAMPLE_DB_NAME}
   mongodb:
     container_name: ${MONGODB_SRV_NAME:-mongodb}
     image: mongo
@@ -48,5 +49,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${EXAMPLE_DB_NAME}
     volumes:
-      - ./movies-srv/mongo-data/:/app/mongo-data/
+      - ./movies-srv/volumes/:/app/volumes/
