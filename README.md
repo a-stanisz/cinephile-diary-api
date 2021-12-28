@@ -42,6 +42,21 @@ username: 'premium-jim'
 password: 'GBLtTyq3E_UNjFnpo9m6'
 ```
 
+## Known issues
+
+- You might encounter MODULE_NOT_FOUND errors in running containers after running `docker-compose up`. For now, the workaround is to:
+  - run `nvm use` to make sure you locally (host machine) use the same version of Node that is used in the containers (see Dockerfiles)
+  - run `npm install` locally in **each service directory** and next in **root project directory**
+  - now you can run `docker-compose up`
+
+example:
+```
+nvm use 14.15 \
+&& cd ./auth-sr && npm install \
+&& cd ../movies-srv && npm install \
+&& cd ../ && npm install
+```
+
 ## Credits
 
 Movies data is fetched from OMDb API (https://omdbapi.com/).
