@@ -45,10 +45,10 @@ services:
     image: mongo
     restart: always
     ports:
-      - "27017:27017"
+      - ${DB_PORT:-27017}:${DB_PORT:-27017}
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
-      MONGO_INITDB_DATABASE: ${EXAMPLE_DB_NAME}
+      MONGO_INITDB_DATABASE: ${EXAMPLE_DB_NAME:-example-database}
     volumes:
       - ./movies-srv/volumes/:/app/volumes/
