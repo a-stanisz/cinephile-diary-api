@@ -27,7 +27,7 @@ app.use(express.json());
 app.use('/', diaryRoutes);
 
 app.get('/', (req, res, next) => {
-  res.send(`Hello! It's intended to be the movie's service.`)
+  res.send('You are accessing the root route of the movie-srv. Hello!')
 });
 
 app.listen(PORT, () => {
