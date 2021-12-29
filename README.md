@@ -2,9 +2,9 @@
 Please note that the default branch of this repository is 'main'
 ```
 
-# Cinephile Diary API
+# 🎬 Cinephile Diary API
 
-A simple Movie API that creates and stores a movie object based on provided within a request: ~~user's credentials and movie title~~ token. Also, fetch a list of movies created by the user.
+ **A simple Movie API that creates, stores, and fetches movie records of the authenticated user.**
 
 ## 🚗 How to run it?
 
@@ -40,12 +40,12 @@ EXAMPLE_DB_NAME=example-database
 OMDB_APIKEY=<your-omdb-apikey>
 
 ```
-Most of them have their defaults set as above, so you need to specify at least:  
+Most of the environmental variables have their defaults set as above, so you need to specify at least:  
 `JWT_SECRET`, `MONGODB_USERNAME`, `MONGODB_PASSWORD` and `OMDB_APIKEY`.  
 
 Please note that **you need to provide \<your-omdb-apikey\>** from OMDB website. You can get it [here](http://www.omdbapi.com/apikey.aspx). 
 
-You can also replace other above example values with your custom ones of course. This can be convenient, especially when it comes to the values of exposed ports.
+You can also replace all other above example-values with your custom ones of course. This can be convenient, especially when it comes to the values of exposed ports.
 
 You can store env vars in the `.env` file at the root directory of the project or provide them inline with `docker-compose up`.
 
@@ -90,9 +90,11 @@ docker-compose down -v
 
 ## Credits
 
-Movies data is fetched from OMDb API (https://omdbapi.com/).
+The task is provided by [Netguru](https://www.netguru.com/).
 
-Auth serice is provided by Netguru (https://github.com/netguru/nodejs-recruitment-task).
+Movies data is fetched from [OMDb API](https://omdbapi.com/).
+
+Auth service is provided within [the task repository](https://github.com/netguru/nodejs-recruitment-task).
 
 ## Checklist
 
