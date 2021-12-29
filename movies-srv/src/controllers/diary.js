@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const User = require('../models/user');
 const Movie = require('../models/movie');
 
@@ -63,14 +65,7 @@ exports.getUserMovies = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    // TODO: Create, based on ids in User document, array of movies and pass it as a response!
-    let userMovies = [];
-    console.log('movies table: ', userMovies);
-    user.diaryEntries.forEach(async (movieObj) => {
-      let movie = await Movie.findById({ _id: movieObj.toString() });
-      userMovies.push(movie);
-    });
-    console.log('movies table: ', userMovies);
+    const userMovies = await Movie.find({'_id': { $in: user.diaryEntries }});
     res.status(200).json({
       userId: `${userId}`,
       userName: `${userName}`,
