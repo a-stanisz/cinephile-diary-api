@@ -7,9 +7,7 @@ const userSchema = new Schema(
       type: Number,
       required: true,
     },
-    userName: {
-      type: String,
-    },
+    userName: String,
     userRole: {
       type: String,
       required: true,
@@ -17,9 +15,14 @@ const userSchema = new Schema(
     diaryEntries: [{
       type: Schema.Types.ObjectId,
       ref: 'Movie',
-    }]
+    }],
+    serviceUsage: {
+      isLimited: Boolean,
+      limit: Number,
+      counter: Number,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model('User', userSchema);
