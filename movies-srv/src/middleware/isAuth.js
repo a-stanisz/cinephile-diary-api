@@ -11,11 +11,12 @@ module.exports = async (req, res, next) => {
       throw error;
     }
     const providedToken = authHeader.split(' ')[1];
-    console.log('provided token: ', providedToken);
+    // console.log('provided token: ', providedToken);
     decodedToken = jwt.verify(String(providedToken), JWT_SECRET);
     if (!decodedToken) {
       const error = new Error('Unauthorized!');
       error.statusCode = 401;
+      // some response to the front?
       throw error.message;
     }
     req.tokenData = decodedToken;
