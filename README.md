@@ -135,6 +135,7 @@ Auth service is provided within [the task repository](https://github.com/netguru
 
 ## Possible further improvements
 
+- Add validation of user request payload
 - Avoid repetitive code, e.g. in the responses
 - Better error handling, e.g. with unified methods spread across the application
 - Improve docker configs, e.g. optimize for production so the Dockerfile could be one and the same for all stages
