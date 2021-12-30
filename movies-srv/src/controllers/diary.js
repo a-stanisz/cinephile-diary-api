@@ -1,7 +1,6 @@
 const User = require('../models/user');
 const Movie = require('../models/movie');
 
-// const resetLimitCounters = require('./workers/resetCounter');
 const basicUsersServiceUsageLimit = 5;
 
 exports.postMovie = async (req, res, next) => {
@@ -32,24 +31,20 @@ exports.postMovie = async (req, res, next) => {
       await user.save();
       console.log('New User created!');
     }
-    // console.log(user.serviceUsage.isLimited);
     if (
       user.serviceUsage.isLimited &&
       user.serviceUsage.counter >= user.serviceUsage.limit
     ) {
-      // console.log(user.serviceUsage.counter, user.serviceUsage.limit)
       res.status(402).json({
         mesage: `The User has reached the limit of ${user.serviceUsage.limit} movie-entries per calendar month!`
       });
     } else {
-      console.log('Do we even get here?')
       const entry = {
         title: req.movieData.title,
         releaseDate: req.movieData.releaseDate,
         genre: req.movieData.genre,
         director: req.movieData.director,
       }
-      console.log(entry);
       const movieEntry = new Movie(entry);
       await movieEntry.save();
       user.diaryEntries.push(movieEntry);
@@ -79,9 +74,9 @@ exports.getUserMovies = async (req, res, next) => {
     let user;
     user = await User.findOne({ userId: userId });
     if (!user) {
-      const error = new Error('User Not Found!');
-      error.statusCode = 404;
-      throw error;
+      res.status(404).json({
+        message: `User don't have any movies yet!`,
+      });
     }
     const userMovies = await Movie.find({ '_id': { $in: user.diaryEntries } });
     res.status(200).json({
