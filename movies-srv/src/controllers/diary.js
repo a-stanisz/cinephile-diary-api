@@ -1,9 +1,8 @@
-const mongoose = require('mongoose');
-
 const User = require('../models/user');
 const Movie = require('../models/movie');
 
-const serviceUsageLimit = 2;
+// const resetLimitCounters = require('./workers/resetCounter');
+const basicUsersServiceUsageLimit = 5;
 
 exports.postMovie = async (req, res, next) => {
   if (!req.user || !req.movieData) {
@@ -14,8 +13,8 @@ exports.postMovie = async (req, res, next) => {
   const userId = req.user.userId;
   const userName = req.user.userName;
   const userRole = req.user.userRole;
-  let user;
   try {
+    let user;
     user = await User.findOne({ userId: userId });
     if (!user) {
       user = new User({
@@ -27,28 +26,34 @@ exports.postMovie = async (req, res, next) => {
       user.userRole === 'basic' ? limitation = true : limitation = false;
       user.serviceUsage.isLimited = limitation;
       if (user.serviceUsage.isLimited === true) {
-        user.serviceUsage.limit = serviceUsageLimit;
+        user.serviceUsage.limit = basicUsersServiceUsageLimit;
         user.serviceUsage.counter = 0;
       }
       await user.save();
       console.log('New User created!');
     }
-    if (user.serviceUsage.isLimited) {
-      if (user.serviceUsage.counter >= user.serviceUsage.limit)
+    // console.log(user.serviceUsage.isLimited);
+    if (
+      user.serviceUsage.isLimited &&
+      user.serviceUsage.counter >= user.serviceUsage.limit
+    ) {
+      // console.log(user.serviceUsage.counter, user.serviceUsage.limit)
       res.status(402).json({
         mesage: `The User has reached the limit of ${user.serviceUsage.limit} movie-entries per calendar month!`
       });
     } else {
+      console.log('Do we even get here?')
       const entry = {
         title: req.movieData.title,
         releaseDate: req.movieData.releaseDate,
         genre: req.movieData.genre,
         director: req.movieData.director,
       }
+      console.log(entry);
       const movieEntry = new Movie(entry);
-      user.diaryEntries.push(movieEntry);
       await movieEntry.save();
-      user.serviceUsage.counter += 1;
+      user.diaryEntries.push(movieEntry);
+      user.serviceUsage.counter++;
       await user.save();
       res.status(200).json({
         message: `Movie: <<${entry.title}>> has been added to the User's Cinephile Diary!`,
