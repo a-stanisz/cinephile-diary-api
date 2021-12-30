@@ -1,8 +1,10 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const dbConnect = require('./database/connect');
+const mongoose = require('mongoose');
+const resetLimitCounters = require('./workers/resetCounter');
 
 dbConnect();
+resetLimitCounters();
 
 // Provide fresh tokens to copy into sample requests for testing endpoints:
 const auth = require('./services/auth');
@@ -12,7 +14,7 @@ const auth = require('./services/auth');
     const premiumUsrToken = await auth('premium-jim', 'GBLtTyq3E_UNjFnpo9m6');
     console.log('Copy following token for testing purposes: ', "'basic-thomas': ", basicUsrToken);
     console.log('Copy following token for testing purposes: ', "'premium-jim': ", premiumUsrToken);
-  } catch(err) {
+  } catch (err) {
     console.error(err);
   }
 })();

@@ -1,21 +1,68 @@
-var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-// console.log(date);
-// console.log(y)
-// console.log(m)
-var firstDay = new Date(y, m, 1);
-var lastDay = new Date(y, m + 1, 0);
-// console.log(lastDay.getHours())
+const User = require('../models/user');
 
-const timestamp = new Date();
-const timeZoneOffset = timestamp.getTimezoneOffset();
-console.log(timeZoneOffset);
-const firstDayNextMonth = new Date(timestamp.getUTCFullYear(), timestamp.getUTCMonth() + 1);
+const triggerReset = async () => {
+  const currentTime = new Date();
+  const lastMinuteofMonth = () => {
+    const date = new Date(
+      currentTime.getFullYear(),
+      currentTime.getMonth() + 1);
+    // date.setMinutes(59);
+    return date;
+  }
+  const triggerTime = lastMinuteofMonth();
+  console.log(`Usage limits counters reset will be triggered at${triggerTime.toISOString()}`)
+  try {
+    setTimeout(async () => {
+      const basicUsers = await User.find({ userRole: 'basic' })
+          if (basicUsers) {
+            for (let user of basicUsers) {
+              user.resetCounter;
+              console.log('counters reseted!')
+            }
+          }
+    }, triggerTime - currentTime)
+  }  catch (err) {
+    console.error('Failing resetting basic users counters!');
+  }
+}
 
-console.log(firstDayNextMonth);
-
-// console.log(lastDay)
-
-// const date = new Date()
 
 
-// const date1 = new Date()
+// const currentTime = 10;
+// const triggerTime = 10;
+
+// const reset = async () => {
+//   try {
+//     // const wait = () => {
+//       setTimeout(async () => {
+//         if (currentTime >= triggerTime) {
+//           console.log('2 step')
+//           const basicUsers = await User.find({ userRole: 'basic' })
+//           if (basicUsers) {
+//             for (let user of basicUsers) {
+//               user.resetCounter;
+//               console.log('counters reseted')
+//             }
+//           }
+//           // if (User) {
+//           // const basicUsers = await User.find({ userRole: 'basic' })
+//           // for (user of basicUsers) {
+//           //   user.resetCounter();
+//           //   }
+//           // }
+//           // User.updateMany({ userRole: 'basic' }, User.resetCounter());
+//           // for (let user of (await User.find({ userRole: 'basic' }))) {
+//           //   user.resetCounter();
+//           // }
+//         } else {
+//           console.log('IT WORKS AND WAITING!')
+//           reset();
+//         }
+//       }, 1000 * 30);
+//     // }
+//   } catch (err) {
+//     console.error('Failing resetting basic users counters!');
+//   }
+// }
+
+module.exports = triggerReset;
