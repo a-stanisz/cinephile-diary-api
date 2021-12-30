@@ -5,9 +5,7 @@ const getMovieDataByTitle = async (title) => {
   try {
     const omdbURI = `http://www.omdbapi.com/?apikey=${OMDB_APIKEY}&t=${title}`;
     const res = await axios.get(omdbURI);
-    const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
-    console.log('Status Code:', res.status);
-    console.log('Date in Response header:', headerDate);
+    console.log('OMDB API GET Status Code:', res.status);
     return res.data;
   } catch (err) {
     console.log('Error: ', err.message);

@@ -70,7 +70,6 @@ exports.getUserMovies = async (req, res, next) => {
     throw error;
   }
   const userId = req.user.userId;
-  const userName = req.user.userName;
   try {
     let user;
     user = await User.findOne({ userId: userId });
