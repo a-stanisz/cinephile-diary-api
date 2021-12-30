@@ -39,7 +39,7 @@ MONGODB_PASSWORD=<password>
 EXAMPLE_DB_NAME=example-database
 OMDB_APIKEY=<your-omdb-apikey>
 ```
-Most of the environmental variables have their defaults set as above,except those in angle brackets, so you need to specify at least:  
+Most of the environmental variables have their defaults set as above, except those in angle brackets, so you need to specify at least:  
 `JWT_SECRET`, `MONGODB_USERNAME`, `MONGODB_PASSWORD` and `OMDB_APIKEY`.  
 
 Please note that **you need to provide \<your-omdb-apikey\>** from OMDB website. You can get it [here](http://www.omdbapi.com/apikey.aspx). 
@@ -87,35 +87,77 @@ nvm use 14.15 \
 ```
 docker-compose down -v
 ```
-## 🕵🏽‍♂️ How to try it out
+## 🕵🏻‍♂️ How to try it out
 
 ### 👉🏽 Authorization service (`auth-srv`) 
 
-To authorize users you need to use Auth service based on JWT tokens that by default runs at the `PORT 3000`.
+To authorize users while sending requests to the `movie-srv`, you need to provide the `<token>`. This is what the `auth-srv` is for. Auth service is based on JWT tokens. By default it runs at the `PORT 3000`.
 
+To get the user's `<token>`, call the auth service at the `/auth` endpoint with the `POST` request and the request payload of `username` and `password`.
 
+There are two example users defined by the `auth-srv` that we use here, each of different roles (service access type):
 
-S
-end POST requests to the Auth service with 'username' and 'password' of a example users used in the task to get users' tokens.
+1. `Basic` user
 
+```
+ username: 'basic-thomas'
+ password: 'sR-_pcoow-27-6PAwCD8'
+```
+
+1. `Premium` user
+
+```
+username: 'premium-jim'
+password: 'GBLtTyq3E_UNjFnpo9m6'
+```
+The example request to get the `<token>` for `basic-thomas`, using `curl`:
+```
+curl --location --request POST '0.0.0.0:3000/auth' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "basic-thomas",
+    "password": "sR-_pcoow-27-6PAwCD8"
+}'
+```
+The example request to get the `<token>` for `premium-jim`, using `curl`:
+```
+curl --location --request POST '0.0.0.0:3000/auth' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "premium-jim",
+    "password": "GBLtTyq3E_UNjFnpo9m6"
+}'
+```
 ### 👉🏽 Movies service (`movies-srv`)
 
-By default the movie service service runs at `PORT 3002`.
+By default the movie service runs at `PORT 3002`.
 
 It provides two endpoints:  
 
 1. `POST /movies`
+
+   Allows creating a movie object based on movie title passed in the request body. Based on the title additional movie details are fetched from OMDB API (Title, Released, Genre, Director).
+
+   Only authorized users can create a movie so you need to pass the `<token>` in the request's Authorization header (`Authorization: Bearer <token>`).
    
-   - 
-2. 
+   Basic users are restricted to create 5 movies per (calendar) month. Premiium users have no limits.
 
-Send POST or GET requests with token in the header to test the /movies endpoint of the Movie service.
-
-Example request:
+  **Example request using `curl`:**
 
 ```
-example request 
+curl --location --request POST '0.0.0.0:3002/movies' --header 'Authorization: Bearer <token>' --header 'Content-Type: application/json' --data-raw '{"title": "The Last Duel"}'
+```
+    
+1. `GET /movies`
 
+    Fetches a list of all movies created by an authorized user.
+
+    Only authorized users can get their's movie list so you need to pass the `<token>` in the request's Authorization header (`Authorization: Bearer <token>`).
+
+  **Example request using `curl`:**
+
+```
+curl --location --request GET '0.0.0.0:3002/movies' --header 'Authorization: Bearer <token>'
 ```
 ### 👉🏽 Database service (`mongodb`)
 
@@ -132,7 +174,7 @@ These are the ROOT credentials used at the db init.
 
 - The task is provided by [Netguru](https://www.netguru.com/) as well as the Auth service that was included in [the original task repository](https://github.com/netguru/nodejs-recruitment-task). 
 
-- Movie data is fetched from [OMDb API](https://omdbapi.com/).
+- Movies data is fetched from [OMDb API](https://omdbapi.com/).
 
 ## ✍🏾 Checklist
 
@@ -143,14 +185,14 @@ These are the ROOT credentials used at the db init.
 - Define middleware for verifying user authentication ✅
 - Handle user type restrictions ✅
 - Remember of proper error handling 🏴󠁳󠁯󠁳󠁯󠁿
-- Write unit tests 🚩
+- Write (some) unit tests 🚩
 - Configure CI/CD pipeline with GitHub Actions 🚩
 - Create a sample Pull Request 🚩
 
 ## 🚧 Important notes
 
 - This is a training and recruitment task project. Keep in mind that it is not intended to be used anywhere for now, especially outside development environment or something
-- Since I don't commit editor-specific files, here is a sample content of VS Code `launch.json` I used to debugging:
+- Since I don't commit editor-specific files, here is a sample content of VS Code `launch.json` I used for debugging:
 ```
 {
   "version": "0.2.0",
@@ -170,14 +212,18 @@ These are the ROOT credentials used at the db init.
 }
 ```
 
-## 👨🏾‍🚀 Possible/needed further improvements
+## 🚀 Possible/needed further improvements
 
 - Validation of user request payload
 - Cover more usage behavior, e.g. right now you can add the same movie multiple times
+- User's movies list for the POST request should be filtered before sending
 - It would be nice to have type checking, preferably using TypeScript. Also, required movie properties could be retrieved using Movie Schema
-- Avoid repetitive code, e.g. unify responses with some dedicated function or remove redundant if-checks 
+- Avoid repetitive code, e.g. unify responses with some dedicated function, remove redundant if-checks 
+- Define more functions that handle common behavior, avoid imperative code
 - Better error handling, e.g. with unified methods spread across the application
+- Use http request logger
 - Improve Docker configs, e.g. optimize for production so the Dockerfile could be one and the same for all stages
+- Wonder if services maybe should be called from controller, not middleware
 - Consider separation of domain model layer, data access layer, and database abstraction layer
 
-### 👋🏽 Thanks!
+### 🎉 Thanks!
