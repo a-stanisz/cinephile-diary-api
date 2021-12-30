@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Node.js task from Netguru",
   "scripts": {
-    "start": "nodemon --inspect=0.0.0.0 .movies-srv/src/server.js",
+    "start": "nodemon --inspect=0.0.0.0:9229 .movies-srv/src/server.js",
     "test": "mocha './movies-srv/src/**/*.test.js'"
   },
   "repository": {
