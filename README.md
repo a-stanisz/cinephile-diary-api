@@ -38,9 +38,8 @@ MONGODB_USERNAME=<db-username>
 MONGODB_PASSWORD=<password>
 EXAMPLE_DB_NAME=example-database
 OMDB_APIKEY=<your-omdb-apikey>
-
 ```
-Most of the environmental variables have their defaults set as above, so you need to specify at least:  
+Most of the environmental variables have their defaults set as above,except those in angle brackets, so you need to specify at least:  
 `JWT_SECRET`, `MONGODB_USERNAME`, `MONGODB_PASSWORD` and `OMDB_APIKEY`.  
 
 Please note that **you need to provide \<your-omdb-apikey\>** from OMDB website. You can get it [here](http://www.omdbapi.com/apikey.aspx). 
@@ -49,7 +48,7 @@ You can also replace all other above example-values with your custom ones of cou
 
 You can store env vars in the `.env` file at the root directory of the project or provide them inline with `docker-compose up`.
 
-### Run it 🤞
+## Run it 🤞
 
 Finally, you can run it with `docker-compose up`:
 
@@ -62,19 +61,21 @@ To stop the services stack run:
 ```
 docker-compose down -v
 ```
-The `-v` (`--volume`) flag removes volumes created for the application.
+The `-v` (`--volume`) flag removes volumes created for the services.
 
 ## 💔 Known issues 
 
 #### **1. Errors of 'MODULE_NOT_FOUND'**
 
-You might encounter MODULE_NOT_FOUND errors in running containers after running `docker-compose up`. Docker configs need some tweaking but I didn't figure it out yet. So please, run `docker-compose down`, and if you don't know what causes the problem, here is the workaround I use for now:
+You might encounter MODULE_NOT_FOUND errors in running containers after running `docker-compose up`. Docker configs need some tweaking but I didn't figure it out yet. Here is the workaround I use for now:
+  - run `docker-compose down -v`
   - run `nvm use` to make sure you locally (host machine) use the same version of Node that is used in the containers (see Dockerfiles)
   - run `npm install` locally in **each service directory** and next in the **root project directory**
-  - now you can run `docker-compose up --build -d` (`--build` flag rebuild image). If the problem still exists, try first delete all `node_modules` and `package-lock.json` (🥶) and try to do above again 
+  - now you can run `docker-compose up --build -d` (`--build` flag rebuild image). If the problem still exists, try first delete all `node_modules` and `package-lock.json` (🥶) and try to do above again. 
 
 example:
 ```
+docker-compose down -v \
 nvm use 14.15 \
 && cd ./auth-sr && npm install \
 && cd ../movies-srv && npm install \
@@ -82,121 +83,101 @@ nvm use 14.15 \
 ```
 #### **2. Anonymous volumes taking up space**
 
-- Note that project's containers use `anonymous volumes` that are newly created each time of startup. To avoid them taking up too much space on your host-disk, please use `--volumes` flag on `docker-compose down`:
+- Note that the project's containers use `anonymous volumes` that are newly created each time of startup. To avoid them taking up too much space on your hostdisk, please use `--volumes` flag that removes them on `docker-compose down`.
 ```
 docker-compose down -v
 ```
+## 🕵🏽‍♂️ How to try it out
+
+### 👉🏽 Authorization service (`auth-srv`) 
+
+To authorize users you need to use Auth service based on JWT tokens that by default runs at the `PORT 3000`.
 
 
-## Credits
 
-The task is provided by [Netguru](https://www.netguru.com/).
+S
+end POST requests to the Auth service with 'username' and 'password' of a example users used in the task to get users' tokens.
 
-Movies data is fetched from [OMDb API](https://omdbapi.com/).
+### 👉🏽 Movies service (`movies-srv`)
 
-Auth service is provided within [the task repository](https://github.com/netguru/nodejs-recruitment-task).
+By default the movie service service runs at `PORT 3002`.
 
-## Checklist
+It provides two endpoints:  
 
-- Dockerize ✔
-- Define domain model ✔
-- Define routes and controllers ✔
-- Define middleware for verifying user authentication and user type restrictions
-- Remember of proper error handling
-- Complete this RADME further
-- Write unit tests
-- Write some integration tests
-- Configure CI/CD pipeline with GitHub Actions
-- Create a sample Pull Request
+1. `POST /movies`
+   
+   - 
+2. 
 
-## Important notes
+Send POST or GET requests with token in the header to test the /movies endpoint of the Movie service.
 
-- This is a training and recruitment task project. Kkeep in mind that it is not intended to be used outside development environment for now.
-- Since I don't commit editor's specific files, here is a sample content of VS Code `launch.json` I used to debugging:
+Example request:
+
+```
+example request 
+
+```
+### 👉🏽 Database service (`mongodb`)
+
+By default the database service runs at `PORT 27017`.
+
+Maybe you'll want to preview the database service using some interactive tool. To log in, select `Username/Password` as the authentication method and use the credentials you defined as environment variables:
+```
+MONGODB_USERNAME=<db-username>
+MONGODB_PASSWORD=<password> 
+```
+These are the ROOT credentials used at the db init.
+
+## 🏅 Credits
+
+- The task is provided by [Netguru](https://www.netguru.com/) as well as the Auth service that was included in [the original task repository](https://github.com/netguru/nodejs-recruitment-task). 
+
+- Movie data is fetched from [OMDb API](https://omdbapi.com/).
+
+## ✍🏾 Checklist
+
+- Setup with a database connection (MongoDB) ✅
+- Dockerize ✅
+- Define domain model ✅
+- Define routes and controllers ✅
+- Define middleware for verifying user authentication ✅
+- Handle user type restrictions ✅
+- Remember of proper error handling 🏴󠁳󠁯󠁳󠁯󠁿
+- Write unit tests 🚩
+- Configure CI/CD pipeline with GitHub Actions 🚩
+- Create a sample Pull Request 🚩
+
+## 🚧 Important notes
+
+- This is a training and recruitment task project. Keep in mind that it is not intended to be used anywhere for now, especially outside development environment or something
+- Since I don't commit editor-specific files, here is a sample content of VS Code `launch.json` I used to debugging:
 ```
 {
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Docker: Attach to Node",
+      "name": "Docker: Attach 9229 --inspect",
       "type": "node",
       "request": "attach",
-      "remoteRoot": "/app/src",
+      "remoteRoot": "/app",
       "port": 9229,
       "address": "localhost",
-      "localRoot": "${workspaceFolder}/movies-srv/",
+      "localRoot": "${workspaceFolder}/movies-srv",
       "protocol": "inspector",
       "restart": true,
     }
-  ],
-  "compounds": []
+  ]
 }
 ```
 
-## Possible further improvements
+## 👨🏾‍🚀 Possible/needed further improvements
 
-- Add validation of user request payload
-- Avoid repetitive code, e.g. in the responses
+- Validation of user request payload
+- Cover more usage behavior, e.g. right now you can add the same movie multiple times
+- It would be nice to have type checking, preferably using TypeScript. Also, required movie properties could be retrieved using Movie Schema
+- Avoid repetitive code, e.g. unify responses with some dedicated function or remove redundant if-checks 
 - Better error handling, e.g. with unified methods spread across the application
-- Improve docker configs, e.g. optimize for production so the Dockerfile could be one and the same for all stages
-- Consider separating domain model layer, data access layer, and database abstraction layer
+- Improve Docker configs, e.g. optimize for production so the Dockerfile could be one and the same for all stages
+- Consider separation of domain model layer, data access layer, and database abstraction layer
 
-## Mock users
-
-The auth service defines two user accounts that you should use
-
-1. `Basic` user (allowed to create 5 movies per month):
-
-```
- username: 'basic-thomas'
- password: 'sR-_pcoow-27-6PAwCD8'
-```
-
-1. `Premium` user (ulimited one):
-
-```
-username: 'premium-jim'
-password: 'GBLtTyq3E_UNjFnpo9m6'
-```
-
-
-## JWT payload
-
-The auth token gives access to basic information about the
-user, including its role.
-
-```
-{
-  "userId": 123,
-  "name": "Basic Thomas",
-  "role": "basic",
-  "iat": 1606221838,
-  "exp": 1606223638,
-  "iss": "https://www.netguru.com/",
-  "sub": "123"
-}
-```
-
-## Example request
-
-To authorize user call the auth service using for example `curl`. We assume
-that the auth service is running of the default port `3000`.
-
-Request
-
-```
-curl --location --request POST '0.0.0.0:3000/auth' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "username": "basic-thomas",
-    "password": "sR-_pcoow-27-6PAwCD8"
-}'
-```
-
-Response
-
-```
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyMywibmFtZSI6IkJhc2ljIFRob21hcyIsInJvbGUiOiJiYXNpYyIsImlhdCI6MTYwNjIyMTgzOCwiZXhwIjoxNjA2MjIzNjM4LCJpc3MiOiJodHRwczovL3d3dy5uZXRndXJ1LmNvbS8iLCJzdWIiOiIxMjMifQ.KjZ3zZM1lZa1SB8U-W65oQApSiC70ePdkQ7LbAhpUQg"
-}
-```
+### 👋🏽 Thanks!
