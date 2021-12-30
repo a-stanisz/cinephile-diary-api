@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Node.js task from Netguru",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --inspect=0.0.0.0 .movies-srv/src/server.js",
+    "test": "mocha './movies-srv/src/**/*.test.js'"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,10 @@
   "dependencies": {
     "auth-srv": "file:auth-srv",
     "movies-srv": "file:movies-srv"
+  },
+  "devDependencies": {
+    "chai": "^4.0.0-canary.2",
+    "mocha": "^9.1.3",
+    "nodemon": "^2.0.15"
   }
 }
