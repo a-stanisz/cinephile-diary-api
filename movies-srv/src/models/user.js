@@ -25,4 +25,6 @@ const userSchema = new Schema(
   { timestamps: true },
 );
 
+userSchema.statics.resetCounter = () => this.serviceUsage.counter = 0;
+
 module.exports = mongoose.model('User', userSchema);
