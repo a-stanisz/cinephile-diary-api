@@ -9,19 +9,19 @@ const triggerReset = async () => {
     return date;
   }
   const triggerTime = firstDayNextMonth();
-  console.log(`Usage limits counters reset will be triggered at${triggerTime.toISOString()}`)
+  console.log(`Scheduled: Basic Users' limit counters will be reset at ${triggerTime.toISOString()}`)
   try {
     setTimeout(async () => {
       const basicUsers = await User.find({ userRole: 'basic' })
           if (basicUsers) {
             for (let user of basicUsers) {
               user.resetCounter;
-              console.log('counters reseted!')
+              console.log(`Success: Basic Users' limit counters have been reset at ${triggerTime.toISOString()}!`)
             }
           }
     }, triggerTime - currentTime)
   }  catch (err) {
-    console.error('Failing resetting basic users counters!');
+    console.error(`Failure: Basic Users' limit counters reset failed!`);
   }
 }
 
