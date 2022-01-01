@@ -11,6 +11,7 @@ services:
         target: ${AUTH_SRV_PORT:-3000}
     volumes:
       - ./auth-srv/:/app/
+      - /app/node_modules
     environment:
       AUTH_SRV_PORT: ${AUTH_SRV_PORT}
       JWT_SECRET: ${JWT_SECRET}
@@ -29,6 +30,7 @@ services:
       - mongodb
     volumes:
       - ./movies-srv/volumes/:/app/volumes/
+      - /app/node_modules
     environment:
       AUTH_HOST: ${AUTH_SRV_NAME:-auth-srv}
       AUTH_PORT: ${AUTH_SRV_PORT}
