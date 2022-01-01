@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Node.js task from Netguru",
   "scripts": {
+    "start": "nodemon -r dotenv/config ./movies-srv/src/server.js",
     "test": "jest"
   },
   "repository": {
