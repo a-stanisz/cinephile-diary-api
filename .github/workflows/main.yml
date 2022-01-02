@@ -26,3 +26,6 @@ jobs:
           MONGODB_USERNAME: $MONGODB_USERNAME
           MONGODB_PASSWORD: $MONGODB_PASSWORD
           OMDB_APIKEY: $OMDB_APIKEY
+          AUTH_SRV_PORT: 3000
+          MOVIES_SRV_PORT: 3002
+          EXAMPLE_DB_NAME: "example-database"
