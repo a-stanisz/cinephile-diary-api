@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Node.js task from Netguru",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon -r dotenv/config ./movies-srv/src/server.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,9 @@
   "dependencies": {
     "auth-srv": "file:auth-srv",
     "movies-srv": "file:movies-srv"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "jest": "^27.4.5"
   }
 }

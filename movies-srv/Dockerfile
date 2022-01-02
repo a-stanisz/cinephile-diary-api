@@ -5,6 +5,7 @@ WORKDIR /app
 COPY ./package.json ./package-lock.json* ./
 RUN npm install
 RUN npm install -g nodemon
+RUN npm install -g jest
 
 RUN mkdir ./src
 COPY ./src ./src
