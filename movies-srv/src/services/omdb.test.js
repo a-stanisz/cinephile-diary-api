@@ -1,4 +1,3 @@
-const path = require('path');
 const omdb = require('./omdb');
 const axios = require('axios');
 const { OMDB_APIKEY } = process.env;
