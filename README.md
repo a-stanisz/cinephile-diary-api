@@ -152,7 +152,7 @@ Maybe you'll want to preview the database service using some interactive tool. T
 MONGODB_USERNAME=<db-username>
 MONGODB_PASSWORD=<password> 
 ```
-These are the ROOT credentials used at the Database service initialization (`MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD`), following by the value of `MONGO_INITDB_DATABASE` variable that specifies the name of the database used by `movies-srv' within the application. 
+These are the ROOT credentials used at the Database service initialization (`MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD`), following by the value of `MONGO_INITDB_DATABASE` variable that specifies the name of the database used by `movies-srv` within the application and that we defined as `EXAMPLE_DB_NAME` environmental variable earlier.
 
 ## 🏅 Credits
 
