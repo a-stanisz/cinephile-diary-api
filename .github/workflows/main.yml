@@ -12,9 +12,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-      - name: Build the stack
-        run: docker-compose build
-      - name: Run the stack
-        run: JWT_SECRET=$JWT_SECRET MONGODB_USERNAME=$MONGODB_USERNAME MONGODB_PASSWORD=$MONGODB_PASSWORD OMDB_APIKEY=$OMDB_APIKEY docker-compose up -d
+      - name: Build & run the stack
+        run: JWT_SECRET=$JWT_SECRET MONGODB_USERNAME=$MONGODB_USERNAME MONGODB_PASSWORD=$MONGODB_PASSWORD OMDB_APIKEY=$OMDB_APIKEY docker-compose up --build -d
       - name: Run the tests on movies-srv
         run: docker-compose run --rm --entrypoint "" movies-srv npm test
