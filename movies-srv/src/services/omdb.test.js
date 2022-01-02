@@ -1,7 +1,6 @@
 const path = require('path');
 const omdb = require('./omdb');
 const axios = require('axios');
-// require('dotenv').config({ path: path.resolve(__dirname, '../../../.env') });
 const { OMDB_APIKEY } = process.env;
 
 jest.mock('axios');

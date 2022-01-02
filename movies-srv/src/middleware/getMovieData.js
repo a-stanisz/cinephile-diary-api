@@ -2,12 +2,6 @@ const omdb = require('../services/omdb');
 
 module.exports = async (req, res, next) => {
   try {
-    const movieProps = [
-      'title',
-      'releaseDate',
-      'genre',
-      'director'
-    ];
     const movieToSearch = req.searchStr;
     const movieData = await omdb(movieToSearch);
     if (!movieData.Title) {

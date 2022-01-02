@@ -1,6 +1,5 @@
 const express = require('express');
 const dbConnect = require('./database/connect');
-const mongoose = require('mongoose');
 const resetLimitCounters = require('./workers/resetCounter');
 
 dbConnect();
