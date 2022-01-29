@@ -1,7 +1,3 @@
-```
-Please note that the default branch of this repository is 'main'
-```
-
 # 🎬 Cinephile Diary API
 
  **A simple Movie API that creates, stores, and fetches movie records of the authenticated user.**
@@ -22,7 +18,7 @@ The stack uses mongodb as a database service.
 
 You need to have `docker` and `docker-compose` installed on your host-machine.
 
-It might be needed to have `node` with `npm` and `nvm` installed locally too.
+It might be handy to have `node` with `npm` and `nvm` installed locally too.
 
 You need to provide environmental variables: 
 
@@ -44,7 +40,7 @@ Most of the environmental variables have their defaults set as above, except tho
 
 Please note that **you need to provide \<your-omdb-apikey\>** from OMDB website. You can get it [here](http://www.omdbapi.com/apikey.aspx). 
 
-You can also replace all other above example-values with your custom ones of course. This can be convenient, especially when it comes to the values of exposed ports.
+You can also replace all other above example-values with your custom ones. This can be convenient, especially when it comes to the values of exposed ports.
 
 You can store env vars in the `.env` file at the root directory of the project or provide them inline with `docker-compose up`.
 
@@ -61,16 +57,8 @@ To stop the services stack run:
 ```
 docker-compose down -v
 ```
-The `-v` (`--volume`) flag removes volumes created for the services.
+Note that the project's containers use `anonymous volumes` that are newly created each time of startup. To avoid them taking up too much space on your hostdisk use the `-v` (`--volume`) flag to removes volumes created for the services.
 
-## 💔 Known issues 
-
-#### **1. Anonymous volumes taking up space**
-
-- Note that the project's containers use `anonymous volumes` that are newly created each time of startup. To avoid them taking up too much space on your hostdisk, please use `--volumes` flag that removes them on `docker-compose down`.
-```
-docker-compose down -v
-```
 ## 🔍 How to try it out
 
 ### 👉🏽 Authorization service (`auth-srv`) 
@@ -175,8 +163,8 @@ These are the ROOT credentials used at the Database service initialization (`MON
 
 ## 🚧 Important notes
 
-- This is a training and recruitment task project. Keep in mind that it is not intended to be used anywhere for now, especially outside development environment or something
-- Since I don't commit editor-specific files, here is a sample content of VS Code `launch.json` I used for debugging:
+- Keep in mind that it was a training and recruitment task project.
+- Since there are no editor-specific files commited, here is a sample content of VS Code `launch.json` used for debugging:
 ```
 {
   "version": "0.2.0",
