@@ -57,7 +57,7 @@ To stop the services stack run:
 ```
 docker-compose down -v
 ```
-Note that the project's containers use `anonymous volumes` that are newly created each time of startup. To avoid them taking up too much space on your hostdisk use the `-v` (`--volume`) flag to removes volumes created for the services.
+Note that the project's containers use `anonymous volumes` that are newly created each time of startup. To avoid them taking up too much space on your hostdisk use the `-v` (`--volume`) flag to remove volumes created for the services.
 
 ## 🔍 How to try it out
 
@@ -189,14 +189,14 @@ These are the ROOT credentials used at the Database service initialization (`MON
 - Validation of user request payload
 - More usage behavior coverage, e.g. right now you can add the same movie multiple times
 - User's movies list for the POST request should be filtered before sending
-- Definetely more tests
+- Definetely, more tests
 - It would be nice to have type checking, preferably using TypeScript. Also, required movie properties could be retrieved using Movie Schema
 - Avoid repetitive code, e.g. unify responses with some dedicated function, remove redundant if-checks 
 - Define more functions that handle common behavior, avoid imperative code
 - Better error handling, e.g. with unified methods spread across the application
 - Use http request logger
 - Improve Docker configs, e.g. optimize for production so the Dockerfile could be one and the same for all stages
-- Services probably should be called from controller, not middleware
+- Services preferably should be called from controller, not middleware
 - Consider separation of domain model layer, data access layer, and database abstraction layer
 
 ### 🎉 Thanks!
