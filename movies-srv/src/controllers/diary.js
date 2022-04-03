@@ -75,7 +75,7 @@ exports.getUserMovies = async (req, res, next) => {
     user = await User.findOne({ userId: userId });
     if (!user) {
       res.status(404).json({
-        message: `User don't have any movies yet!`,
+        message: `User doesn't have any movies yet!`,
       });
     }
     const userMovies = await Movie.find({ '_id': { $in: user.diaryEntries } });
