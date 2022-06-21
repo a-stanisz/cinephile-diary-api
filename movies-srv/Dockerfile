@@ -11,4 +11,3 @@ RUN mkdir ./src
 COPY ./src ./src
 
 ENTRYPOINT [ "nodemon", "--inspect=0.0.0.0", "./src/server.js" ]
-# CMD ["nodemon", "./src/server.js"]
